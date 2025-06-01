@@ -34,7 +34,7 @@ const Theme = () => {
                     <span className='sr-only'>Toggle Theme</span>
                 </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align='end'>
+            <DropdownMenuContent align='end' className='background-light900_dark200'>
                 <DropdownMenuItem onClick={() => setTheme("light")}>Light</DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setTheme("dark")}>Dark</DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setTheme("system")}>System</DropdownMenuItem>
