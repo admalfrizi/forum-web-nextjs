@@ -20,7 +20,7 @@ const page = async () => {
           redirectTo: ROUTES.SIGN_IN
         })
       }} className='px-10 pt-[10px]'>
-        <Button className='cursor-pointer' type='submit'>
+        <Button variant="outline" className='cursor-pointer' type='submit'>
           Logout
         </Button>
       </form>

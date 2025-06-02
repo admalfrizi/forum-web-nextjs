@@ -302,3 +302,12 @@
   .btn-tertiary { background-color: var(--light-700) !important; }
   .dark .btn-tertiary { background-color: var(--dark-300) !important; }
 }
+
+.custom-scrollbar {
+  scrollbar-width: none;
+  --ms-overflow-style: none;
+}
+
+.custom-scrollbar::webkit-scrollbar {
+  display: none;
+}
