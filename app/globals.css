@@ -308,6 +308,6 @@
   --ms-overflow-style: none;
 }
 
-.custom-scrollbar::webkit-scrollbar {
+.custom-scrollbar::-webkit-scrollbar {
   display: none;
 }
