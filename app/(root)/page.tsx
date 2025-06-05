@@ -6,6 +6,10 @@ import { Button } from '@/components/ui/button';
 import ROUTES from '@/constants/routes';
 import Link from 'next/link';
 import React from 'react';
+import { error } from 'console';
+import handleError from '@/lib/handlers/error';
+import { ForbiddenError, NotFoundError, ValidationError } from '@/lib/http-errors';
+import dbConnect from '@/lib/mongoose';
 
 const questions = [
   {
@@ -52,7 +56,17 @@ interface SearchParams {
   searchParams: Promise<{[key: string] : string}>
 }
 
+const test = async () => {
+  try{
+    await dbConnect()
+  } catch(error) {
+    return handleError(error)
+  }
+}
+
 const page = async ({searchParams} : SearchParams) => {
+
+  await test()
 
   const {query = "", filter = ""} = await searchParams;
   const filteredQuestions = questions.filter((question) => 
