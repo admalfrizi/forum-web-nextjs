@@ -10,6 +10,7 @@ import { error } from 'console';
 import handleError from '@/lib/handlers/error';
 import { ForbiddenError, NotFoundError, ValidationError } from '@/lib/http-errors';
 import dbConnect from '@/lib/mongoose';
+import { api } from '@/lib/api';
 
 const questions = [
   {
@@ -58,7 +59,7 @@ interface SearchParams {
 
 const test = async () => {
   try{
-    await dbConnect()
+    return await api.users.getAll()
   } catch(error) {
     return handleError(error)
   }
@@ -66,7 +67,8 @@ const test = async () => {
 
 const page = async ({searchParams} : SearchParams) => {
 
-  await test()
+  const users = await test()
+  console.log(users)
 
   const {query = "", filter = ""} = await searchParams;
   const filteredQuestions = questions.filter((question) => 
