@@ -39,8 +39,6 @@ export async function fetchHandler<T>(url:string, options: FetchOptions = {}) : 
         const response = await fetch(url,config)
         clearTimeout(id);
 
-        console.log("response",response)
-
         if(!response.ok) {
             throw new RequestError(response.status, `HTTP error: ${response.status}`)
         }

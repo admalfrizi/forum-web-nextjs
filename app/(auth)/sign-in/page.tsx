@@ -1,8 +1,8 @@
 "use client"
 import AuthForm from '@/components/forms/AuthForm';
+import { signInWithCredentials } from '@/lib/actions/auth.action';
 import { SignInSchema } from '@/lib/validations';
 import React from 'react';
-import { FieldValues } from 'react-hook-form';
 
 const SignIn = () => {
     return (
@@ -11,11 +11,7 @@ const SignIn = () => {
             defaultValues={{
                 email : "", password: ""
             }} 
-            onSubmit={(data) => Promise.resolve({
-                    success: true,
-                    data
-                })
-            } 
+            onSubmit={signInWithCredentials} 
             formType='SIGN_IN'
         />
     )
