@@ -1,8 +1,6 @@
-import { ActionResponse } from "@/types/global";
 import { RequestError } from "../http-errors";
 import logger from "../logger";
 import handleError from "./error";
-
 
 interface FetchOptions extends RequestInit {
     timeout?: number;
@@ -40,6 +38,8 @@ export async function fetchHandler<T>(url:string, options: FetchOptions = {}) : 
     try {
         const response = await fetch(url,config)
         clearTimeout(id);
+
+        console.log("response",response)
 
         if(!response.ok) {
             throw new RequestError(response.status, `HTTP error: ${response.status}`)

@@ -57,18 +57,18 @@ interface SearchParams {
   searchParams: Promise<{[key: string] : string}>
 }
 
-const test = async () => {
-  try{
-    return await api.users.getAll()
-  } catch(error) {
-    return handleError(error)
-  }
-}
+// const test = async () => {
+//   try{
+//     return await api.users.getAll()
+//   } catch(error) {
+//     return handleError(error)
+//   }
+// }
 
 const page = async ({searchParams} : SearchParams) => {
 
-  const users = await test()
-  console.log(users)
+  const session = await auth();
+  console.log("Session: ", session)
 
   const {query = "", filter = ""} = await searchParams;
   const filteredQuestions = questions.filter((question) => 
