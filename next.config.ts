@@ -5,6 +5,7 @@ const nextConfig: NextConfig = {
   serverExternalPackages: [
     "pino", "pino-pretty"
   ],
+  devIndicators: false,
   images : {
     remotePatterns: [
       {
@@ -12,7 +13,11 @@ const nextConfig: NextConfig = {
         hostname: "static.vecteezy.com",
         port: ""
       },
-
+      {
+        protocol: "https",
+        hostname: "avatars.githubusercontent.com",
+        port: ""
+      },
     ],
   },
 };

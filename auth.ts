@@ -14,15 +14,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       async authorize(credentials) {
         const validatedFields = SignInSchema.safeParse(credentials);
 
-        console.log("Validate Data",validatedFields)
-
         if(validatedFields.success){
           const {email,password} = validatedFields.data;
-          const {data: existingAccount} = (await api.accounts.getByProvider(email)) as ActionResponse<IAccountDoc>
+          const {data: existingAccount} = (await api.accounts.getByProvider(email)) as ActionResponse<IAccountDoc>;
 
           if(!existingAccount) return null;
-          const {data: existingUser} = (await api.users.getById(existingAccount.userId.toString())) as ActionResponse<IUserDoc>
+          const {data: existingUser} = (await api.users.getById(existingAccount.userId.toString())) as ActionResponse<IUserDoc>;
 
+          console.log("existing User:", existingAccount)
           if(!existingUser) return null;
           
           const isValidPassword = await bcrypt.compare(password,existingAccount.password!)

@@ -7,7 +7,7 @@ import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
 
-    const {providerAccountId} = await request.json();
+    const { providerAccountId } = await request.json();
 
     try {
         await dbConnect();
