@@ -1,8 +1,9 @@
 "use client";
    
-import React, { useRef } from "react";
+import React, { useRef, useTransition } from "react";
 import { useForm } from "react-hook-form"; 
 import { Button } from "../ui/button";
+import {ReloadIcon} from "@radix-ui/react-icons";
 import {
   Form,
   FormControl, 
@@ -19,12 +20,19 @@ import dynamic from "next/dynamic";
 import { MDXEditorMethods } from "@mdxeditor/editor";
 import { z } from "zod";
 import TagCard from "../cards/TagCard";
+import { createQuestion } from "@/lib/actions/question.action";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import ROUTES from "@/constants/routes";
 
 const Editor = dynamic(() => import("@/components/editor"),{
   ssr: false,
 });
 
 const QuestionForm = () => {
+
+  const router = useRouter()
+  const [isPending, startTransaction] = useTransition()
 
   const editorRef = useRef<MDXEditorMethods>(null);
 
@@ -37,8 +45,25 @@ const QuestionForm = () => {
     }
   })
 
-  const handleCreateQuestion = (data: z.infer<typeof AskQuestionSchema>) => {
-    console.log(data)
+  const handleCreateQuestion = async (data: z.infer<typeof AskQuestionSchema>) => {
+    startTransaction(async () => {
+      const result = await createQuestion(data)
+
+      if(result.success){
+        toast.success(
+          "Success",
+          {
+            description: "Question created successfully"
+          }
+        );
+
+        if(result.data) router.push(ROUTES.QUESTION(result.data._id));
+      } else {
+        toast.error(`Error ${result.status}`,{
+          description: result.error?.message || "Something went wrong"
+        })
+      }
+    })
   }
 
   const handleTagRemove = (tag: string, field: {value: string[]}) => {
@@ -163,9 +188,21 @@ const QuestionForm = () => {
         <div className="mt-16 flex justify-end">
           <Button
             type="submit"
+            disabled={isPending}
             className="primary-gradient w-fit !text-light-900"
           >
-            Ask A Question
+            {
+              isPending ? (
+                <>
+                  <ReloadIcon className="mr-2 size-4 animate-spin"/>
+                  <span>Submitting</span>
+                </>
+              ) : (
+                <>
+                  Ask A Question
+                </>
+              )
+            }
           </Button>
         </div>
       </form>
