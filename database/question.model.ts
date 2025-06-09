@@ -20,14 +20,11 @@ const QuestionSchema = new Schema<IQuestion>({
     },
     content: {
         type: String,
-        required: true,
-        unique: true
+        required: true
     },
     tags: [{
         type: Schema.Types.ObjectId,
-        required: true,
-        ref: "Tag",
-        unique: true
+        ref: "Tag"
     }],
     views: {
         type: Number, default: 0
@@ -44,8 +41,7 @@ const QuestionSchema = new Schema<IQuestion>({
     author: {
         type: Schema.Types.ObjectId,
         required: true,
-        ref: "User",
-        unique: true
+        ref: "User"
     },
 }, 
 {

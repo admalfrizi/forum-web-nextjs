@@ -24,7 +24,7 @@ async function action<T>({
             if(error instanceof ZodError){
                 return new ValidationError(error.flatten().fieldErrors as Record<string, string[]>);
             } else {
-                return new Error("Schema validatop failed");
+                return new Error("Schema validation failed");
             }
         }
     }

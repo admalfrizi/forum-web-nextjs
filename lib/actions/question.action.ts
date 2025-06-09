@@ -1,6 +1,6 @@
 "use server";
 
-import Question from '@/database/questions.model'
+import Question from '@/database/question.model'
 import { AskQuestionSchema } from '../validations';
 import action from '../handlers/action';
 import handleError from '../handlers/error';
@@ -19,8 +19,12 @@ export async function createQuestion(params: CreateQuestionParams) : Promise<Act
         return handleError(validationResult) as ErrorResponse;
     }
 
+    console.log("params :", params)
+
     const {title, content, tags} = validationResult.params!;
     const userId = validationResult?.session?.user?.id;
+
+    console.log("userId :", userId)
 
     const session = await mongoose.startSession();
     session.startTransaction();
@@ -33,6 +37,8 @@ export async function createQuestion(params: CreateQuestionParams) : Promise<Act
             {session}
         ])
 
+        console.log("questions: ", question)
+
         if(!question){
             throw new Error("Failed to create question");
         }
@@ -43,10 +49,10 @@ export async function createQuestion(params: CreateQuestionParams) : Promise<Act
         for(const tag of tags){
             const existingTag = await Tag.findOneAndUpdate(
                 {
-                    name: {$regex: new RegExp('${tag}$', "i")}
+                    name: { $regex: new RegExp('${tag}$', "i")}
                 },
                 {
-                    $setOnInsert: {name: tag},$inc: {question: 1}
+                    $setOnInsert: {name: tag}, $inc: {question: 1}
                 },
                 {   
                     upsert: true, new: true, session
