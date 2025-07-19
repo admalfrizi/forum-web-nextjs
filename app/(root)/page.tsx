@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import ROUTES from '@/constants/routes';
 import Link from 'next/link';
 import React from 'react';
-import { getListQuestions } from '@/lib/actions/question.action';
+import { getQuestions } from '@/lib/actions/question.action';
 import DataRenderer from '@/components/DataRenderer';
 import { error } from 'console';
 import { EMPTY_QUESTION } from '@/constants/states';
@@ -17,14 +17,14 @@ interface SearchParams {
 const page = async ({searchParams} : SearchParams) => {
 
   const {query, filter, page, pageSize} = await searchParams; 
-  const { success, data, error } = await getListQuestions({
+  const { success, data, error } = await getQuestions({
     page: Number(page) || 1,
     pageSize: Number(pageSize) || 10,
     query: query || "",
     filter: filter || ""
   });
 
-  const {questions } = data || {}
+  const { questions } = data || {}
   // const filteredQuestions = questions.filter((question) => 
   // {
   //   const matchesQuery = question.title.toLowerCase().includes(query.toLowerCase());
@@ -34,6 +34,8 @@ const page = async ({searchParams} : SearchParams) => {
 
   //   return matchesQuery && matchesFilter
   // });
+
+  console.log(questions)
 
   return (
     <>

@@ -1,12 +1,13 @@
 "use server";
 
-import Question, { IQuestionDoc } from '@/database/question.model'
+import Question, { IQuestionDoc } from '@/database/question.model';
 import { AskQuestionSchema, EditQuestionSchema, GetQuestionSchema, PaginatedSearchParamsSchema } from '../validations';
 import action from '../handlers/action';
 import handleError from '../handlers/error';
 import mongoose, { FilterQuery } from 'mongoose';
 import Tag, { ITagDoc } from '@/database/tag.model';
 import TagQuestion from '@/database/tag-question.model';
+import dbConnect from '../mongoose';
 
 export async function createQuestion(params: CreateQuestionParams) : Promise<ActionResponse<Question>> {
     const validationResult = await action({
@@ -210,7 +211,7 @@ export async function getQuestion(params: getQuestionParams) : Promise<ActionRes
 
 }
 
-export async function getListQuestions(params: PaginatedSearchParams) : Promise<ActionResponse<{questions: Question[]; isNext: boolean}>> {
+export async function getQuestions(params: PaginatedSearchParams) : Promise<ActionResponse<{questions: Question[]; isNext: boolean}>> {
     const validationResult = await action({
         params,
         schema: PaginatedSearchParamsSchema
@@ -259,13 +260,14 @@ export async function getListQuestions(params: PaginatedSearchParams) : Promise<
             sortCriteria = { upvotes: -1 }
             break;
         default:
-            sortCriteria = {createAt: -1}
+            sortCriteria = {createdAt: -1}
             break
     }
 
     try {
         const totalQuestions = await Question.countDocuments(filterQuery);
-        const questions = await Question.find(filterQuery).populate("tags", "name")
+        const questions = await Question.find(filterQuery)
+            .populate("tags", "name")
             .populate("author", "name image")
             .lean().sort(sortCriteria).skip(skip).limit(limit);
         
@@ -279,6 +281,7 @@ export async function getListQuestions(params: PaginatedSearchParams) : Promise<
             }
         }
     } catch (error) {
+        console.error("Error : ", error)
        return handleError(error) as ErrorResponse
     }
 }
