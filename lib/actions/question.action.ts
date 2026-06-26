@@ -52,7 +52,7 @@ export async function createQuestion(params: CreateQuestionParams) : Promise<Act
                     name: { $regex: new RegExp(`${tag}$`, "i")}
                 },
                 {
-                    $setOnInsert: {name: tag}, $inc: {question: 1}
+                    $setOnInsert: {name: tag}, $inc: {questions: 1}
                 },
                 {   
                     upsert: true, new: true, session

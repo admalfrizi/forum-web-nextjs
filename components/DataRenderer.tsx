@@ -38,7 +38,7 @@ interface StateSkeletonProps {
 
 const StateSkeleton = ({
     image, title, message, button
-}: StateSkeletonProps) => {
+}: StateSkeletonProps) => (
     <div className='mt-16 flex w-full flex-col items-center justify-center sm:mt-36'>
         <>
             <Image src={image.dark} alt={image.alt} width={270} height={200} className='hidden object-contain dark:block'/>
@@ -55,7 +55,7 @@ const StateSkeleton = ({
             </Link>
         )}
     </div>
-} 
+) 
 
 const DataRenderer = <T,>({
     success,
