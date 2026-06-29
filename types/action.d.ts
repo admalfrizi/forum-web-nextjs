@@ -30,7 +30,7 @@ interface getQuestionParams {
     questionId: string
 }
 
-interface GetTagQuestionsParams extends Omit<PaginatedSearchParams, "filter"> { 
+interface GetTagQuestionsParams extends Omit<PaginatedSearchParams, "filter"> {
     tagId: string;
-    
+
 }

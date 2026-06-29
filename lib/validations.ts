@@ -82,7 +82,7 @@ export const UserSchema = z.object({
     .url({ message: "Please provide a valid URL." })
     .optional(),
   reputation: z.number().optional(),
-}); 
+});
 
 export const AccountSchema = z.object({
   userId: z.string().min(1, { message: "User ID is required." }),
@@ -128,11 +128,11 @@ export const SignInWithOAuthSchema = z.object({
 });
 
 export const EditQuestionSchema = AskQuestionSchema.extend({
-  questionId: z.string().min(1, {message: "Question ID is Required"})
+  questionId: z.string().min(1, { message: "Question ID is Required" })
 });
 
 export const GetQuestionSchema = z.object({
-  questionId: z.string().min(1, {message: "Question ID is Required"})
+  questionId: z.string().min(1, { message: "Question ID is Required" })
 });
 
 export const PaginatedSearchParamsSchema = z.object({
@@ -144,6 +144,6 @@ export const PaginatedSearchParamsSchema = z.object({
 });
 
 export const GetTagsQuestionsSchema = PaginatedSearchParamsSchema.extend({
-  tagId: z.string().min(1, { message: "Tag ID is Required"}),
+  tagId: z.string().min(1, { message: "Tag ID is Required" }),
 
 })
