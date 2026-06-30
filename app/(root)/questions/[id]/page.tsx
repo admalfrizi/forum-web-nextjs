@@ -1,9 +1,12 @@
+import AllAnswers from '@/components/answers/AllAnswers';
 import TagCard from '@/components/cards/TagCard';
 import Preview from '@/components/editor/Preview';
+import AnswerForm from '@/components/forms/AnswerForm';
 import Metric from '@/components/Metric';
 import UserAvatar from '@/components/UserAvatar';
 import ROUTES from '@/constants/routes';
-import { getQuestion } from '@/lib/actions/question.action';
+import { getAnswers } from '@/lib/actions/answer.action';
+import { getQuestion, incrementViews } from '@/lib/actions/question.action';
 import { formatNumber, getTimeStamp } from '@/lib/utils';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
@@ -12,8 +15,17 @@ import React from 'react';
 const QuestionDetails = async ({ params }: RouteParams) => {
 
     const { id } = await params;
+    await incrementViews({ questionId: id })
+
     const { success, data: question } = await getQuestion({ questionId: id });
     if (!success || !question) return redirect("/404");
+
+    const { success: areAnswerLoaded, data : answersResult, error: answerError } = await getAnswers({
+        questionId: id,
+        page: 1,
+        pageSize: 10,
+        filter: "latest"
+    })
 
     const { author, createdAt, answers, views, tags, content, title } = question; 
 
@@ -69,6 +81,17 @@ const QuestionDetails = async ({ params }: RouteParams) => {
                     <TagCard key={tag._id} _id={tag._id as string} name={tag.name} compack/>
                 ))}
             </div>
+            <section className='my-5'>
+                <AllAnswers 
+                    data={answersResult?.answers}
+                    success={areAnswerLoaded}
+                    error={answerError}
+                    totalAnswers={answersResult?.totalAnswers || 0}
+                />
+            </section>
+            <section className='my-5'>
+                <AnswerForm questionId={question._id} />
+            </section>
         </>
     );
 };
