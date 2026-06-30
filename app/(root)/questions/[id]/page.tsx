@@ -1,5 +1,6 @@
 import TagCard from '@/components/cards/TagCard';
 import Preview from '@/components/editor/Preview';
+import AnswerForm from '@/components/forms/AnswerForm';
 import Metric from '@/components/Metric';
 import UserAvatar from '@/components/UserAvatar';
 import ROUTES from '@/constants/routes';
@@ -8,8 +9,6 @@ import { formatNumber, getTimeStamp } from '@/lib/utils';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import React from 'react';
-
-
 
 const QuestionDetails = async ({ params }: RouteParams) => {
 
@@ -73,6 +72,9 @@ const QuestionDetails = async ({ params }: RouteParams) => {
                     <TagCard key={tag._id} _id={tag._id as string} name={tag.name} compack/>
                 ))}
             </div>
+            <section className='my-5'>
+                <AnswerForm questionId={question._id} />
+            </section>
         </>
     );
 };
